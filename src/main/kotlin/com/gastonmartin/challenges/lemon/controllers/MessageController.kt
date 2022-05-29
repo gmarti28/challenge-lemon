@@ -3,12 +3,14 @@ package com.gastonmartin.challenges.lemon.controllers
 import com.gastonmartin.challenges.lemon.exceptions.TooManyRequestsException
 import com.gastonmartin.challenges.lemon.services.MessageService
 import com.gastonmartin.challenges.lemon.util.HomemadeRateLimiter
+import com.gastonmartin.challenges.lemon.util.Logging
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class MessageController(val service: MessageService, val limiter: HomemadeRateLimiter) {
 
+    companion object: Logging
 
     @GetMapping("/message")
     fun getBecause(): FOAASResponse {
@@ -17,7 +19,7 @@ class MessageController(val service: MessageService, val limiter: HomemadeRateLi
             // todo: Add further exception handling
             FOAASResponse(message = service.getBecauseMessage())
         } else {
-            System.err.println("Found that ${limiter.getAllRecords().size} requests were made in the last 10 seconds")
+            logger.error("Found that ${limiter.getAllRecords().size} requests were made in the last 10 seconds")
             throw TooManyRequestsException()
         }
     }

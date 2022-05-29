@@ -1,0 +1,20 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
+management.endpoints.web.exposure.include: "*"
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    path: /swagger-ui
+  api-docs.path: /api-docs
+  default-consumes-media-type: application/json
+  remove-broken-reference-definitions: false
+  writer-with-default-pretty-printer: true
+
+logging:
+  config: classpath:logback.xml
+  level:
+    com.gastonmartin.challenges.lemon: DEBUG
+    org.springframework: INFO

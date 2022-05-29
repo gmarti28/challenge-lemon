@@ -1,5 +1,6 @@
 package com.gastonmartin.challenges.lemon
 
+import com.gastonmartin.challenges.lemon.util.Logging
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -13,7 +14,7 @@ import java.net.URI
 class FOAASClient {
 
     private val rest: RestTemplate = RestTemplate()
-
+    companion object: Logging
 
     fun getBecause(): String{
 
@@ -31,7 +32,7 @@ class FOAASClient {
         val response: ResponseEntity<String>? = try {
             rest.exchange(requestEntity, String::class.java)
         } catch (e: Exception){
-            // todo: Add a log statement
+            logger.error("${e.message} while requesting message from FOAAS service")
             // todo: Handle org.springframework.web.client.UnknownHttpStatusCodeException i.e 520 : [no body]
             throw e
         }
