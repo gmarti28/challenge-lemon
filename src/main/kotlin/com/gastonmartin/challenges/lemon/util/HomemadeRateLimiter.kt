@@ -6,6 +6,8 @@ import java.time.temporal.ChronoUnit
 
 @Component
 class HomemadeRateLimiter {
+
+    companion object: Logging
     private val requests: MutableCollection<LocalDateTime> = ArrayList()
 
     /*  Under heavy load the list of requests should have at most 5 records
@@ -34,7 +36,7 @@ class HomemadeRateLimiter {
             val secondCount = requests.size
             if (secondCount < firstCount) {
                 // todo: Convert to log.debug or remove
-                System.err.println("Removed ${firstCount-secondCount} elements from ratelimit records")
+                logger.debug("Removed ${firstCount-secondCount} elements from rate limit records")
             }
         }
     }
