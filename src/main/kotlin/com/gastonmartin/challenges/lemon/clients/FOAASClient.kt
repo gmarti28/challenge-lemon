@@ -20,7 +20,7 @@ class FOAASClient(private val config: FOAASConfig) {
 
     fun getBecause(): String{
 
-        val uriTemplate = "${config.endpoint}/${config.operation}" ///{param}"
+        val uriTemplate = "${config.endpoint}/${config.operation}/{param}"
 
         val uri: URI = UriComponentsBuilder
             .fromUriString(uriTemplate)

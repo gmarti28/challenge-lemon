@@ -30,10 +30,11 @@ class VeryBasicAuthFilter : OncePerRequestFilter() {
             ""
         }
 
-        if (givenUserName == "Admin") {
+        val servletPath = request.servletPath
+        if (givenUserName == "Admin" ||  servletPath == "/" || servletPath.startsWith("/swagger-ui") || servletPath.startsWith("/api-docs")) {
             filterChain.doFilter(request, response)
         } else {
-            handleInvalidUsername(request.servletPath, response)
+            handleInvalidUsername(servletPath, response)
         }
     }
 
