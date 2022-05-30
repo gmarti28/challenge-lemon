@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.gastonmartin.challenges.lemon.filters.AuthConstants.USERNAME_HEADER
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.text.SimpleDateFormat
 import java.util.Date
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse
 class VeryBasicAuthFilter : OncePerRequestFilter() {
 
     private val objectMapper = ObjectMapper()
+    private val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -37,7 +39,7 @@ class VeryBasicAuthFilter : OncePerRequestFilter() {
 
     fun handleInvalidUsername(path: String, response: HttpServletResponse) {
         val errorResponse = ErrorResponse(
-            timestamp = Date(),
+            timestamp = sdf.format(Date()),
             status = 403,
             error = "Forbidden",
             path = path
@@ -54,7 +56,7 @@ object AuthConstants {
 }
 
 data class ErrorResponse(
-    val timestamp: Date,
+    val timestamp: String,
     val status: Int,
     val error: String,
     val path: String?

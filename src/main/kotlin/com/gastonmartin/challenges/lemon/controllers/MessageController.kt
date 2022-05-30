@@ -1,10 +1,12 @@
 package com.gastonmartin.challenges.lemon.controllers
 
+import com.gastonmartin.challenges.lemon.exceptions.ForbiddenException
 import com.gastonmartin.challenges.lemon.exceptions.TooManyRequestsException
 import com.gastonmartin.challenges.lemon.services.MessageService
 import com.gastonmartin.challenges.lemon.util.HomemadeRateLimiter
 import com.gastonmartin.challenges.lemon.util.Logging
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -13,7 +15,9 @@ class MessageController(val service: MessageService, val limiter: HomemadeRateLi
     companion object: Logging
 
     @GetMapping("/message")
-    fun getBecause(): FOAASResponse {
+    fun getBecause(@RequestHeader(name = "x-username", required = false) usernameHeader: String): FOAASResponse {
+        if (usernameHeader != "Admin") throw ForbiddenException()
+
         /* As per the challenge requirements, a custom-made rate limiter is used instead of a production-ready such as Bucket4j, Resilience4j or Guava */
         return if ( limiter.consume()){
             // todo: Add further exception handling

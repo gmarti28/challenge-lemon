@@ -1,6 +1,6 @@
 package com.gastonmartin.challenges.lemon.services
 
-import com.gastonmartin.challenges.lemon.FOAASClient
+import com.gastonmartin.challenges.lemon.clients.FOAASClient
 import org.springframework.stereotype.Service
 
 @Service
