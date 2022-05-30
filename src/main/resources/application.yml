@@ -8,6 +8,7 @@ springdoc:
   swagger-ui:
     use-root-path: true
     path: /swagger-ui
+    disable-swagger-default-url: true
   api-docs.path: /api-docs
   default-consumes-media-type: application/json
   remove-broken-reference-definitions: false
