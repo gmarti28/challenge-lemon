@@ -10,3 +10,6 @@ class ForbiddenException : RuntimeException()
 
 @ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS, reason = "Too many requests were made in the last seconds")
 class TooManyRequestsException : RuntimeException()
+
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+class InternalServerErrorException(override val cause: Throwable): RuntimeException(cause)

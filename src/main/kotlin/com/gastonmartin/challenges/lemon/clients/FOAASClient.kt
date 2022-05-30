@@ -1,5 +1,7 @@
-package com.gastonmartin.challenges.lemon
+package com.gastonmartin.challenges.lemon.clients
 
+import com.gastonmartin.challenges.lemon.config.FOAASConfig
+import com.gastonmartin.challenges.lemon.exceptions.InternalServerErrorException
 import com.gastonmartin.challenges.lemon.util.Logging
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
@@ -11,18 +13,18 @@ import java.net.URI
 
 
 @Component
-class FOAASClient {
+class FOAASClient(private val config: FOAASConfig) {
 
     private val rest: RestTemplate = RestTemplate()
     companion object: Logging
 
     fun getBecause(): String{
 
-        val uriTemplate = "https://www.foaas.com/because/{from}"
+        val uriTemplate = "${config.endpoint}/${config.operation}/{param}"
 
         val uri: URI = UriComponentsBuilder
             .fromUriString(uriTemplate)
-            .build("Gaston")
+            .build("Annonymous")
 
         val requestEntity: RequestEntity<Void> = RequestEntity
             .get(uri)
@@ -31,9 +33,11 @@ class FOAASClient {
 
         val response: ResponseEntity<String>? = try {
             rest.exchange(requestEntity, String::class.java)
+        } catch (e: UnknownHttpStatusCodeException) {
+            logger.warn("Unknown HTTP Status Code: ${e.message}")
+            throw InternalServerErrorException(e)
         } catch (e: Exception){
             logger.error("${e.message} while requesting message from FOAAS service")
-            // todo: Handle org.springframework.web.client.UnknownHttpStatusCodeException i.e 520 : [no body]
             throw e
         }
         return response?.body ?: ""
