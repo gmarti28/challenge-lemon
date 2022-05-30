@@ -14,6 +14,14 @@ springdoc:
   remove-broken-reference-definitions: false
   writer-with-default-pretty-printer: true
 
+ratelimit:
+  maxRequests: 5
+  windowSizeSeconds: 10
+
+fooas:
+  endpoint: https://www.foaas.com
+  operation: because
+
 logging:
   config: classpath:logback.xml
   level:
